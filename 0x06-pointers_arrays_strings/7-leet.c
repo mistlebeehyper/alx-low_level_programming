@@ -1,34 +1,28 @@
 #include "main.h"
+
 /**
- * cap_string - capitalize all words of string
- * Return: void
- * @s: string
+ * leet - Entry point
+ * ONE if, TWO loops only...
+ * @n: input
+ * Return: Always 0 (Success)
  */
-char *cap_string(char *s)
+char *leet(char *n)
 {
-	int i = 0, j = 0;
+	int i, x;
+	int find[] = {'a', 'A', 'e', 'E', 'o', 'O', 't', 'T', 'l', 'L'};
+	int replacer[] = {'4', '3', '0', '7', '1'};
 
-	char seps[] = {32, 10, 9, 44, 59, 46, 33, 63, 34, 40, 41, 123, 125};
-
-	int size = sizeof(seps) / sizeof(seps[0]);
-
-	while (s[i] != 0)
+	for (i = 0; n[i] != '\0'; i++)
 	{
-		char c = s[i];
-
-		for (j = 0; j < size; j++)
+		for (x = 0; x <= 9; x++)
 		{
-			if (c == seps[j] && s[i + 1] >= 'a' && s[i + 1] <= 'z')
+			if (n[i] == find[x])
 			{
-				s[i + 1] = 'A' + (s[i + 1] - 'a');
-				break;
+				n[i] = replacer[x / 2];
+				x = 9;
 			}
 		}
-		i++;
 	}
 
-	if (s[0] >= 'a' && s[0] <= 'z')
-		s[0] = 'A' + (s[0] - 'a');
-
-	return (s);
+	return (n);
 }
