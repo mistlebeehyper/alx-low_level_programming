@@ -1,28 +1,32 @@
-#include "main.h"
+#include "holberton.h"
+
 /**
- * _sqrt_recursion - no loop, 1. 2nd function - checks for perfect square
- * @n: input
- * Return: Always 0 (Success)
+ * my_sqrt_recursion - This is my my_sqrt_recursion
+ *                     function about the square root
+ * @a: The entry is equal to n, of the before function
+ * @b: This is the sum
+ *
+ * Return: This is the result
+ */
+int my_sqrt_recursion(int a, int b)
+{
+	if (a == (b * b))
+		return (b);
+	else if ((b * b) >= a)
+		return (-1);
+	else
+		return (my_sqrt_recursion(a, b + 1));
+}
+
+/**
+ * _sqrt_recursion - This is my first function
+ * @n: This is my value
+ *
+ * Return: This is my result of the function my_sqrt_recursion
  */
 int _sqrt_recursion(int n)
 {
-	if (n < 0)
+	if (n <= 0)
 		return (-1);
-	else
-		return (squareroot(n, (n + 1) / 2));
-}
-/**
- * squareroot - checks if perfect square
- * @n: input
- * @i: counter
- * Return: if square root
- */
-int squareroot(int n, int i)
-{
-	if (i < 1)
-		return (-1);
-	else if (i * i == n)
-		return (i);
-	else
-		return (squareroot(n, i - 1));
+	return (my_sqrt_recursion(n, 0));
 }
