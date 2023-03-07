@@ -1,32 +1,28 @@
-#include "holberton.h"
-
+#include "main.h"
 /**
- * my_sqrt_recursion - This is my my_sqrt_recursion
- *                     function about the square root
- * @a: The entry is equal to n, of the before function
- * @b: This is the sum
- *
- * Return: This is the result
+ * _is_square - natural square root of a number
+ * @x: number
+ * @i: auxiliar variable
+ * Return: natural square root
  */
-int my_sqrt_recursion(int a, int b)
+int _is_square(int x, int i)
 {
-	if (a == (b * b))
-		return (b);
-	else if ((b * b) >= a)
-		return (-1);
-	else
-		return (my_sqrt_recursion(a, b + 1));
-}
 
+	int sqr = i * i;
+
+	if (sqr == x)
+		return (i);
+	else if (sqr > x)
+		return (-1);
+
+	return (_is_square(x, i + 1));
+}
 /**
- * _sqrt_recursion - This is my first function
- * @n: This is my value
- *
- * Return: This is my result of the function my_sqrt_recursion
+ * _sqrt_recursion - natural square root of a number
+ * @n: number
+ * Return: natural square root
  */
 int _sqrt_recursion(int n)
 {
-	if (n <= 0)
-		return (-1);
-	return (my_sqrt_recursion(n, 0));
+	return (_is_square(n, 1));
 }
