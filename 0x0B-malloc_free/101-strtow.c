@@ -1,102 +1,86 @@
-#include "main.h"
+#include "holberton.h"
 #include <stdlib.h>
 #include <stdio.h>
 /**
- * strtow - splits string into words
- * @str: string
- * Return: pointer to array of strings
+ * wordcounter - counts words and the letters in them
+ * @str: string to count
+ * @pos: position of the word to count characters from
+ * @firstchar: position of the first letter of the word
+ * if pos = 0, count the number of chars in the word
+ * else count number of words
+ * Return: wordcount if pos == 0,
+ * length of word if pos > 0,
+ * position of word if pos > 0 && firstchar > 0
+ */
+int wordcounter(char *str, int pos, char firstchar)
+{
+	int i, wordcount, charcount, flag;
+
+	str[0] != ' ' ? (wordcount = 1) : (wordcount = 0);
+	for (i = 0, flag = 0; str[i]; i++)
+	{
+		if (str[i] == ' ' && str[i + 1] != ' ' && str[i + 1] != '\0' && flag == 0)
+		{
+			wordcount++;
+			flag = 1;
+		}
+		if (pos > 0 && pos == wordcount)
+		{
+			if (pos > 0 && pos == wordcount && firstchar > 0)
+				return (i);
+			for (charcount = 0; str[i + charcount + 1] != ' '; charcount++)
+				;
+			return (charcount);
+		}
+		if (str[i] == ' ')
+			flag = 0;
+	}
+	return (wordcount);
+}
+/**
+ * strtow - convert a string into a 2d array of words
+ * @str: string to convert
+ * Return: double pointer to 2d array
  */
 char **strtow(char *str)
 {
-	char **s;
+	int wc, wordlen, getfirstchar, len, i, j;
+	char **p;
 
-	int words, i = 0, filler = 0;
-
-	if (str == NULL || *str == 0)
+	for (len = 0; str[len]; len++)
+		;
+	if (str == NULL)
 		return (NULL);
-	words = getWords(str);
-	if (words == 0)
+	wc = wordcounter(str, 0, 0);
+	if (len == 0 || wc == 0)
 		return (NULL);
-	s = malloc(sizeof(char *) * (words + 1));
-	if (s == NULL)
+	p = malloc((wc + 1) * sizeof(void *));
+	if (p == NULL)
 		return (NULL);
-	while (str[i])
+	for (i = 0, wordlen = 0; i < wc; i++)
 	{
-		if (str[i] != ' ')
+		/* Allocate memory for nested elements */
+		wordlen = wordcounter(str, i + 1, 0);
+		if (i == 0 && str[i] != ' ')
+			wordlen++;
+		p[i] = malloc(wordlen * sizeof(char) + 1);
+		if (p[i] == NULL)
 		{
-			int size = get_size_of_first(str + i);
-
-			s[filler] = malloc(sizeof(char) * (size + 1));
-			if (s[filler] == NULL)
-			{
-				int k;
-
-				for (k = 0; k < filler; k++)
-				{
-					free(s[k]);
-				}
-				free(s);
-				return (NULL);
-			}
-			fill(s[filler], str + i, size);
-			filler++;
-			i += size - 1;
+			for ( ; i >= 0; --i)
+				free(p[i]);
+			free(p);
+			return (NULL);
 		}
-		i++;
+		/* initialize each element of the nested array with the word*/
+		getfirstchar = wordcounter(str, i + 1, 1);
+		if (str[0] != ' ' && i > 0)
+			getfirstchar++;
+		else if (str[0] == ' ')
+			getfirstchar++;
+		for (j = 0; j < wordlen; j++)
+			p[i][j] = str[getfirstchar + j];
+		p[i][j] = '\0';
 	}
-	s[words] = NULL;
-	return (s);
-}
-/**
- * getWords - get number of words in string
- * @s: string
- * Return: words
- */
-int getWords(char *s)
-{
-	int i = 0, words = 0;
-
-	while (s[i])
-	{
-		if (i == 0 && s[i] != ' ')
-			words++;
-
-		if (s[i] == ' ' && s[i + 1] && s[i + 1] != ' ')
-		{
-			words++;
-		}
-		i++;
-	}
-	return (words);
-}
-/**
- * get_size_of_first - size of first word in string
- * @s: string
- * Return: size of word
- */
-int get_size_of_first(char *s)
-{
-	int i = 0;
-
-	while (s[i] && s[i] != ' ')
-		i++;
-	return (i);
-}
-/**
- * fill - fills s2 in s1
- * @s1: string1
- * @s2: string2
- * @size: size of s2
- * Return: void
- */
-void fill(char *s1, char *s2, int size)
-{
-	int i = 0;
-
-	while (i < size)
-	{
-		s1[i] = s2[i];
-		i++;
-	}
-	s1[size] = '\0';
+	p[i] = NULL;
+	return (p);
 }
