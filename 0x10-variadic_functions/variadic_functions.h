@@ -1,5 +1,5 @@
-#ifndef VARIADIC_FNS
-#define VARIADIC_FNS
+#ifndef VARIADIC_H
+#define VARIADIC_H
 
 #define VALIDTYPESCONDITIONAL(i) (format[i] == 'c' || format[i] == 'i' || format[i] == 'f' || format[i] == 's')
 
