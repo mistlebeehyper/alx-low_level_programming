@@ -1,10 +1,14 @@
-#include "main.h"
+#include "function_pointers.h"
+
 /**
-  * print_name - prints a name
-  * @name: input string
-  * @f: function pointer casted to char pointer
-  */
+ * print_name - function that prints a name
+ *
+ * @name: THis is the input string or the input name
+ * @f: This is the input function to print the name
+ *
+ */
 void print_name(char *name, void (*f)(char *))
 {
-	(*f)(name);
+	if (f != 0 && name != 0)
+		f(name);
 }
